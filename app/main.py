@@ -3,6 +3,8 @@ import streamlit as st
 from crud import add_todo, list_todos, complete_todo, modify_todo, delete_todo
 import os
 from ai.nlp import analyze_todo_command, summarize_todos
+
+
 from datetime import datetime
 
 
@@ -10,7 +12,17 @@ st.title("AI Todo App")
 
 # --- AI Section ---
 st.header("AI Assistant: Natural Language Todo Management")
-ai_input = st.text_input("Ask AI to manage your todos (e.g. 'Remind me to call mom tomorrow and delete the old task'):")
+
+
+# --- AI Text Input ---
+ai_input = st.session_state.get("ai_input", "")
+
+# --- Text input (sync with session state for mic) ---
+ai_input = st.text_input(
+    "Ask AI to manage your todos (e.g. 'Remind me to call mom tomorrow and delete the old task'):",
+    value=ai_input,
+    key="ai_input"
+)
 ai_result = None
 if st.button("Let AI Handle It") and ai_input:
     # Setup Gemini/OpenAI LLM

@@ -5,11 +5,9 @@ from langchain.prompts import PromptTemplate
 import os
 
 def analyze_todo_command(user_input: str, api_key: str = None):
-    from dotenv import load_dotenv
-    load_dotenv()
-    # Gemini expects GOOGLE_API_KEY in env, do not pass as param
     from ai.prompts import CHAIN_OF_THOUGHTS_PROMPT, FEW_SHOT_EXAMPLES
-    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.2)
+    from ai.llm import get_gemini_llm
+    llm = get_gemini_llm()
     prompt = PromptTemplate(
         input_variables=["user_input"],
         template=CHAIN_OF_THOUGHTS_PROMPT.format(
@@ -51,9 +49,8 @@ def analyze_todo_command(user_input: str, api_key: str = None):
             raise ValueError(f"AI response did not contain a JSON object. Raw response: {content}")
 
 def summarize_todos(todos, api_key: str = None):
-    from dotenv import load_dotenv
-    load_dotenv()
-    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.2)
+    from ai.llm import get_gemini_llm
+    llm = get_gemini_llm()
     todo_titles = [t.get("title", "") for t in todos]
     summary_prompt = PromptTemplate(
         input_variables=["todos"],

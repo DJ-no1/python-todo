@@ -1,12 +1,8 @@
 # Simple Gemini chat in terminal for testing
-from langchain_google_genai import ChatGoogleGenerativeAI
-from dotenv import load_dotenv
-import os
 
-load_dotenv()
+from llm import get_gemini_llm
 
-# Make sure GOOGLE_API_KEY is set in .env
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.2)
+llm = get_gemini_llm(model="gemini-2.0-flash")  # Use the latest Gemini model
 
 print("Gemini Terminal Chat. Type 'exit' to quit.")
 while True:
